@@ -1,16 +1,13 @@
 package com.prasantha.restsample.customermanagement.service;
 
 import com.prasantha.restsample.customermanagement.domain.Customer;
-import com.prasantha.restsample.customermanagement.stub.CustomerBuilder;
+import com.prasantha.restsample.customermanagement.stub.CustomerStub;
 import org.junit.Test;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class CustomerManagementServiceTest {
 
@@ -40,12 +37,12 @@ public class CustomerManagementServiceTest {
     public void createCustomer() {
         RestTemplate restTemplate = new RestTemplate();
 
-        Customer customer = CustomerBuilder.getCustomer1();
+        Customer customer = CustomerStub.getCustomer1();
 
         URI uri = restTemplate.postForLocation(REST_SERVICE_URI, customer, Customer.class);
         System.out.println("Location : "+uri.toASCIIString());
 
-        customer = CustomerBuilder.getCustomer2();
+        customer = CustomerStub.getCustomer2();
 
         uri = restTemplate.postForLocation(REST_SERVICE_URI, customer, Customer.class);
         System.out.println("Location : "+uri.toASCIIString());

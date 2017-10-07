@@ -2,8 +2,6 @@ package com.prasantha.restsample.customermanagement.service;
 
 import com.prasantha.restsample.customermanagement.dao.CustomerRepository;
 import com.prasantha.restsample.customermanagement.domain.Customer;
-import com.prasantha.restsample.customermanagement.stub.CustomerBuilder;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
