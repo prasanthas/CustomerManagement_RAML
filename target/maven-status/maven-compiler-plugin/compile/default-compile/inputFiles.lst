@@ -1,0 +1,6 @@
+/Users/prasanthasivabalasunderam/GITHUB/Deloit/RAML/CustomerManagement_RAML/src/main/java/com/prasantha/restsample/customermanagement/CustomermanagementApplication.java
+/Users/prasanthasivabalasunderam/GITHUB/Deloit/RAML/CustomerManagement_RAML/src/main/java/com/prasantha/restsample/customermanagement/dao/CustomerRepository.java
+/Users/prasanthasivabalasunderam/GITHUB/Deloit/RAML/CustomerManagement_RAML/src/main/java/com/prasantha/restsample/customermanagement/domain/Customer.java
+/Users/prasanthasivabalasunderam/GITHUB/Deloit/RAML/CustomerManagement_RAML/src/main/java/com/prasantha/restsample/customermanagement/domain/Address.java
+/Users/prasanthasivabalasunderam/GITHUB/Deloit/RAML/CustomerManagement_RAML/src/main/java/com/prasantha/restsample/customermanagement/service/CustomerManagementService.java
+/Users/prasanthasivabalasunderam/GITHUB/Deloit/RAML/CustomerManagement_RAML/src/main/java/com/prasantha/restsample/customermanagement/stub/CustomerBuilder.java

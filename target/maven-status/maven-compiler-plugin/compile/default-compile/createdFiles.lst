@@ -1,0 +1,6 @@
+com/prasantha/restsample/customermanagement/stub/CustomerBuilder.class
+com/prasantha/restsample/customermanagement/domain/Customer.class
+com/prasantha/restsample/customermanagement/CustomermanagementApplication.class
+com/prasantha/restsample/customermanagement/dao/CustomerRepository.class
+com/prasantha/restsample/customermanagement/service/CustomerManagementService.class
+com/prasantha/restsample/customermanagement/domain/Address.class
