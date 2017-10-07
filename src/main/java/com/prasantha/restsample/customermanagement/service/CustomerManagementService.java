@@ -5,14 +5,13 @@ import com.prasantha.restsample.customermanagement.domain.Customer;
 import com.prasantha.restsample.customermanagement.stub.CustomerBuilder;
 import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,10 @@ public class CustomerManagementService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @RequestMapping(path = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    //http://localhost:8080/resource/customerservice/customer/list
+    @RequestMapping(path = "/customer/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Customer>> listCustomers() {
+        System.out.println("listCustomer called");
 
         List<Customer> customers = StreamSupport.stream(customerRepository.findAll().spliterator(), false).collect(Collectors.toList());
 
@@ -38,31 +39,74 @@ public class CustomerManagementService {
         return new ResponseEntity<List<Customer>>(customers, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/{customerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Customer getCustomer(@PathVariable Long customerId) {
-        return customerRepository.findOne(customerId);
+    //http://localhost:8080/resource/customerservice/customer/2
+    @RequestMapping(path = "/customer/{customerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Customer> getCustomer(@PathVariable Long customerId) {
+        System.out.println("getCustomer Called");
+
+        Customer customer = customerRepository.findOne(customerId);
+
+        if (customer == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
 
-    @RequestMapping("/addCustomer")
-    public void insertCustomer() {
-        Customer customer = CustomerBuilder.getCustomer1();
+//    @RequestMapping("/customer/addCustomer")
+//    public void insertCustomer() {
+//        Customer customer = CustomerBuilder.getCustomer1();
+//
+//        customerRepository.save(customer);
+//    }
+
+    @RequestMapping(path = "/customer/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> addCustomer(@RequestBody Customer customer, UriComponentsBuilder ucBuilder) {
+        System.out.println("Add Customer called"+customer);
 
         customerRepository.save(customer);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(customer.getId()).toUri());
+        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void addCustomer(Customer customer) {
+    @RequestMapping(path = "/customer/{customerId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> updateCustomer(@PathVariable("customerId") Long customerId,@RequestBody Customer customer) {
+        System.out.println("updateCustomer Called");
+
+        Customer existingCustomer = customerRepository.findOne(customerId);
+
+        System.out.println("existingCustomer: "+existingCustomer);
+        customer.setId(existingCustomer.getId());
+
+        if (existingCustomer == null) {
+            System.out.println("customer not found");
+            new ResponseEntity(new String("Customer not found"), HttpStatus.NOT_FOUND);
+        }
+
         customerRepository.save(customer);
+
+        return new ResponseEntity<Customer>(existingCustomer,HttpStatus.OK);
+
     }
 
-    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void updateCustomer(Customer customer) {
-        customerRepository.save(customer);
-    }
+    @RequestMapping(path = "/customer/{customerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<?> deleteCustomer(@PathVariable("customerId") Long customerId) {
+        System.out.println("deleteCustomer called");
 
-    @RequestMapping(path = "{customerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void deleteCustomer() {
+        Customer existingCustomer = customerRepository.findOne(customerId);
 
+        System.out.println("existingCustomer: "+existingCustomer);
+
+        if (existingCustomer == null) {
+            System.out.println("customer not found");
+            new ResponseEntity(new String("Customer not found"), HttpStatus.NOT_FOUND);
+        }
+
+        customerRepository.delete(existingCustomer);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }

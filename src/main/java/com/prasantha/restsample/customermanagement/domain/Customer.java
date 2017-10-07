@@ -45,13 +45,22 @@ public class Customer {
         this.address = address;
     }
 
-//    public Set<Order> getOrders() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    //    public Set<Order> getOrders() {
 //        return orders;
 //    }
 //
 //    public void setOrders(Set<Order> orders) {
 //        this.orders = orders;
 //    }
+
 
     @Override
     public String toString() {
