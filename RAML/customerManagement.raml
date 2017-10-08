@@ -1,0 +1,95 @@
+#%RAML 1.0
+---
+title: Customer Management API
+baseUri: http://customermanagement.prasantha.api.com.au/resource/customerservice
+version: v1
+mediaType: application/json
+
+traits:
+  pageable:
+    queryParameters:
+      offset:
+        description: Skip over a number of elements by specifying an offset value for the query
+        type: integer
+        required: false
+        example: 20
+        default: 0
+      limit:
+        description: Limit the number of elements on the response
+        type: integer
+        required: false
+        example: 80
+        default: 10
+
+/customers:
+  /list:
+    get:
+      is: [pageable]
+      description: List All Customers
+      queryParameters:
+        modifiedDate:
+          displayName: Retrieve from modified date
+          type: string
+          description: Retrieve customer where modified date is > passed in value
+          example: 2017-09-20
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include customers.sample
+
+  /{customerId}:
+    get:
+      description: Retrieve customer by id
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include customer.sample
+        404:
+          body:
+            application/json:
+              example: |
+                {"message": "Resource/Customer not found" }
+    put:
+      description: Update the customer if found, otherwise return Not found status code and error message
+      body:
+        application/json:
+          example: !include customer.sample
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include customer.sample
+        404:
+          body:
+            application/json:
+              example: |
+                {"message": "Resource/Customer not found" }
+    delete:
+       description: Delete the Customer by customerId
+       responses:
+         204:
+           description: Customer deletion is successful. No Content
+         404:
+           description: Resource/Customer Not found
+
+    #Extension
+    /orders:
+      /{orderId} :
+        get:
+          description: Retrieve Order of the Customer
+        /products :
+          /{productId} :
+            get:
+              description: Retrieve Products
+
+  post:
+    description: Create a new customer and return newly created customer's resource location
+    body:
+      application/json:
+        example: !include customer.sample
+    responses:
+      201:
+        description: Http Header contains Created Status code and newly created customer's resource location

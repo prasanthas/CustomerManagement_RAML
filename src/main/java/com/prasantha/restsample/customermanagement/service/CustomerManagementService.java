@@ -11,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -23,7 +22,6 @@ public class CustomerManagementService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    //http://localhost:8080/resource/customerservice/customer/list
     @RequestMapping(path = "/customer/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Customer>> listCustomers() {
         System.out.println("listCustomer called");
@@ -51,13 +49,6 @@ public class CustomerManagementService {
         return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
 
-//    @RequestMapping("/customer/addCustomer")
-//    public void insertCustomer() {
-//        Customer customer = CustomerBuilder.getCustomer1();
-//
-//        customerRepository.save(customer);
-//    }
-
     @RequestMapping(path = "/customer/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> addCustomer(@RequestBody Customer customer, UriComponentsBuilder ucBuilder) {
         System.out.println("Add Customer called"+customer);
@@ -65,7 +56,7 @@ public class CustomerManagementService {
         customerRepository.save(customer);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(customer.getId()).toUri());
+        headers.setLocation(ucBuilder.path("resource/customerservice/customer/{id}").buildAndExpand(customer.getId()).toUri());
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
 
@@ -76,14 +67,16 @@ public class CustomerManagementService {
         Customer existingCustomer = customerRepository.findOne(customerId);
 
         System.out.println("existingCustomer: "+existingCustomer);
-        customer.setId(existingCustomer.getId());
+        existingCustomer.setFirstName(customer.getFirstName());
+        existingCustomer.setLastName(customer.getLastName());
+        existingCustomer.setAddress(customer.getAddress());
 
         if (existingCustomer == null) {
             System.out.println("customer not found");
             new ResponseEntity(new String("Customer not found"), HttpStatus.NOT_FOUND);
         }
 
-        customerRepository.save(customer);
+        customerRepository.save(existingCustomer);
 
         return new ResponseEntity<Customer>(existingCustomer,HttpStatus.OK);
 
@@ -107,4 +100,5 @@ public class CustomerManagementService {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+//    /orders/{orderid}
 }
