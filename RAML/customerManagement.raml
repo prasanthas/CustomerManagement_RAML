@@ -5,6 +5,14 @@ baseUri: http://customermanagement.prasantha.api.com.au/resource/customerservice
 version: v1
 mediaType: application/json
 
+types:
+  If-Modified-Since:
+    type: datetime
+    example: Sun, 08 Oct 2017 00:00:00 GMT
+    format: rfc2616 # this time it's required as otherwise the example is in an invalid format
+  customer: !include customer.schema
+
+
 traits:
   pageable:
     queryParameters:
@@ -24,19 +32,29 @@ traits:
 /customers:
   /list:
     get:
+      headers:
+        If-Modified-Since:
+          description: Return the object only if it has been modified since the specified time, otherwise return a 304 (not modified).
       is: [pageable]
       description: List All Customers
       queryParameters:
-        modifiedDate:
+        If-Modified-Since:
           displayName: Retrieve from modified date
-          type: string
+          type: datetime
           description: Retrieve customer where modified date is > passed in value
-          example: 2017-09-20
+          example: Sun, 08 Oct 2017 00:00:00 GMT
+          format: rfc2616 # this time it's required as otherwise the example is in an invalid format
           required: false
       responses:
         200:
+          headers:
+            If-Modified-Since:
+              type: datetime
+              example: Sun, 08 Oct 2017 00:00:00 GMT
+              format: rfc2616 # this time it's required as otherwise the example is in an invalid format
           body:
             application/json:
+              type: array
               example: !include customers.sample
 
   /{customerId}:
@@ -46,6 +64,7 @@ traits:
         200:
           body:
             application/json:
+              type: customer
               example: !include customer.sample
         404:
           body:
@@ -92,4 +111,19 @@ traits:
         example: !include customer.sample
     responses:
       201:
+        headers:
+          Location:
+            type: string
+            description: returns created resource location
+            example: http://customermanagement.prasantha.api.com.au/resource/customerservice/customers/5
         description: Http Header contains Created Status code and newly created customer's resource location
+
+/orders:
+  /{orderId} :
+    get:
+      description: Retrieve Order of the Customer
+
+/products:
+  /{productId} :
+    get:
+      description: Retrieve Products
