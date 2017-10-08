@@ -77,6 +77,7 @@ traits:
       description: Update the customer if found, otherwise return Not found status code and error message
       body:
         application/json:
+          type: !include customer.schema
           example: !include customer.sample
       responses:
         200:
@@ -90,6 +91,8 @@ traits:
                 {"message": "Resource/Customer not found" }
     delete:
        description: Delete the Customer by customerId
+       queryParameters:
+         customerId: string
        responses:
          204:
            description: Customer deletion is successful. No Content
