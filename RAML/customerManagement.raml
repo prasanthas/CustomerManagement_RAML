@@ -56,6 +56,8 @@ traits:
             application/json:
               type: array
               example: !include customers.sample
+        304:
+          description: Not modified since last time updated
 
   /{customerId}:
     get:
