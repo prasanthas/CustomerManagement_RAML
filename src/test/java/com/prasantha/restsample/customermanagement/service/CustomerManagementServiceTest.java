@@ -2,11 +2,11 @@ package com.prasantha.restsample.customermanagement.service;
 
 import com.prasantha.restsample.customermanagement.domain.Customer;
 import com.prasantha.restsample.customermanagement.stub.CustomerStub;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 

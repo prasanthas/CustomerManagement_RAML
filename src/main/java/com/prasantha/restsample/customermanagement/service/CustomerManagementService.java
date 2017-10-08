@@ -22,6 +22,7 @@ public class CustomerManagementService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    //http://localhost:8080/resource/customerservice/customer/list
     @RequestMapping(path = "/customer/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<Customer>> listCustomers() {
         System.out.println("listCustomer called");

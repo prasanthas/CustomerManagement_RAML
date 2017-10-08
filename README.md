@@ -3,9 +3,12 @@ CustomerManagement System using RAML
 
 ## Springboot application
 Simple Springboot application have been developed to practically show GET,PUT,POST,DELETE actions.
-mvn clean install
+mvn clean install -DskipTests
+
 run CustomermanagementApplication class to start the Springboot application
-run selected (testAll) tests from CustomerManagementServiceTest to see actions
+or java -jar target/customermanagement-0.0.1-SNAPSHOT.jar
+
+run selected (testAll) tests from CustomerManagementServiceTest to see actions. Other option is to use any other rest clients/test tools like postman.
 
 # RAML
 RAML is developed using Atom api-workbench

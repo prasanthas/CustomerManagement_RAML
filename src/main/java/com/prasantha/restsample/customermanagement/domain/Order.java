@@ -9,7 +9,6 @@ public class Order {
     private Long id;
     private String orderDetails;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
     private Set<Product> products;
 
     public String getOrderDetails() {

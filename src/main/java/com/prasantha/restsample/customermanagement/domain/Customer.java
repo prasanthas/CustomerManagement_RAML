@@ -28,9 +28,6 @@ public class Customer {
     @UpdateTimestamp
     private Timestamp updated;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-//    private Set<Order> orders;
-
     public String getFirstName() {
         return firstName;
     }

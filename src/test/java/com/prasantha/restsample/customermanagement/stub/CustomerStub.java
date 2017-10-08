@@ -18,8 +18,6 @@ public class CustomerStub {
 
         customer.setAddress(address);
 
-
-
         return customer;
     }
 
